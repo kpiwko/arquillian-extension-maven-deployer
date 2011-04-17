@@ -18,8 +18,8 @@ package org.jboss.arquillian.maven;
 
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.maven.annotation.Deployments;
 import org.jboss.arquillian.maven.annotation.MavenDeployment;
+import org.jboss.arquillian.maven.annotation.MavenDeployments;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +30,7 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:kpiwko@redhat.com">Karel Piwko</a>
  * 
  */
-@Deployments(@MavenDeployment(value = "org.jboss.weld.examples.jsf:weld-jsf-login:war:1.1.1.Final",
+@MavenDeployments(@MavenDeployment(value = "org.jboss.weld.examples.jsf:weld-jsf-login:war:1.1.1.Final",
             settings = "src/test/resources/settings.xml"))
 @RunWith(Arquillian.class)
 public class WarDeploymentTestCase

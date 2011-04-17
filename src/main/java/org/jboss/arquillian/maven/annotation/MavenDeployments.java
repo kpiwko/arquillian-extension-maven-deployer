@@ -24,12 +24,14 @@ import java.lang.annotation.Target;
 
 /**
  * @author <a href="kpiwko@redhat.com>Karel Piwko</a>
- *
+ * 
  */
-@Target(ElementType.ANNOTATION_TYPE)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
+@Deployments
 @Documented
-public @interface Deployments
+public @interface MavenDeployments
 {
 
+   MavenDeployment[] value();
 }

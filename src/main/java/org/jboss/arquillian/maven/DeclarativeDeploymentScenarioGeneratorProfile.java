@@ -20,14 +20,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.jboss.arquillian.maven.impl.MavenDeploymentScenarioGenerator;
+import org.jboss.arquillian.maven.impl.DeploymentsScenarioRegistrar;
 import org.jboss.arquillian.spi.Profile;
 
 /**
  * @author <a href="kpiwko@redhat.com>Karel Piwko</a>
  * 
  */
-public class MavenDeployerProfile implements Profile
+public class DeclarativeDeploymentScenarioGeneratorProfile implements Profile
 {
 
    /*
@@ -38,7 +38,7 @@ public class MavenDeployerProfile implements Profile
    public Collection<Class<?>> getClientProfile()
    {
       List<Class<?>> list = new ArrayList<Class<?>>();
-      list.add(MavenDeploymentScenarioGenerator.class);
+      list.add(DeploymentsScenarioRegistrar.class);
 
       return list;
    }
@@ -51,7 +51,7 @@ public class MavenDeployerProfile implements Profile
    public Collection<Class<?>> getContainerProfile()
    {
       List<Class<?>> list = new ArrayList<Class<?>>();
-      list.add(MavenDeploymentScenarioGenerator.class);
+      list.add(DeploymentsScenarioRegistrar.class);
 
       return list;
    }

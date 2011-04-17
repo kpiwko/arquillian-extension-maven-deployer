@@ -17,21 +17,17 @@
 package org.jboss.arquillian.maven.impl;
 
 import java.util.Collection;
-import java.util.logging.Logger;
 
 import org.jboss.arquillian.api.Deployment;
 import org.jboss.arquillian.api.ShouldThrowException;
-import org.jboss.arquillian.impl.client.deployment.AnnotationDeploymentScenarioGenerator;
-import org.jboss.arquillian.maven.annotation.Deployments;
 import org.jboss.arquillian.maven.annotation.MavenDeployment;
-import org.jboss.arquillian.spi.ServiceLoader;
+import org.jboss.arquillian.maven.annotation.MavenDeployments;
+import org.jboss.arquillian.maven.spi.DeclarativeDeploymentScenarioGenerator;
 import org.jboss.arquillian.spi.TestClass;
 import org.jboss.arquillian.spi.client.deployment.DeploymentDescription;
 import org.jboss.arquillian.spi.client.deployment.DeploymentScenario;
-import org.jboss.arquillian.spi.client.deployment.DeploymentScenarioGenerator;
 import org.jboss.arquillian.spi.client.protocol.ProtocolDescription;
 import org.jboss.arquillian.spi.client.test.TargetDescription;
-import org.jboss.arquillian.spi.core.Instance;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
@@ -40,37 +36,32 @@ import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
  * @author <a href="kpiwko@redhat.com>Karel Piwko</a>
  * 
  */
-public class MavenDeploymentScenarioGenerator implements DeploymentScenarioGenerator
+public class MavenDeploymentsScenarioGenerator implements DeclarativeDeploymentScenarioGenerator<MavenDeployments>
 {
-   private Logger log = Logger.getLogger(MavenDeploymentScenarioGenerator.class.getName());
-
    // fully qualified name of exception which act as uninitialized value
    private static final String UNUSED_EXCEPTION_CHECK = "org.jboss.arquillian.maven.annotation.MavenDeployment.UNUSED_EXCEPTION_CHECK";
-
-   private Instance<ServiceLoader> serviceLoader;
 
    /*
     * (non-Javadoc)
     * 
-    * @see org.jboss.arquillian.spi.client.deployment.DeploymentScenarioGenerator#generate(org.jboss.arquillian.spi.TestClass)
+    * @see org.jboss.arquillian.maven.spi.DeploymentsScenarioGenerator#getPrecedence()
     */
-   public DeploymentScenario generate(TestClass testClass)
+   public int getPrecedence()
    {
-      DeploymentScenario scenario = new DeploymentScenario();
-      Deployments deployments = testClass.getAnnotation(Deployments.class);
+      return 0;
+   }
 
-      if (deployments == null)
-      {
-         log.fine("MavenDeploymentScenarioGenerator was registered, but not @Deployments were specified. Passed control to AnnotationDeploymentScenarioGenerator");
-         return chainAnnotatedDeploymentGenerator(testClass);
-      }
-
-      for (MavenDeployment maven : deployments.value())
+   /*
+    * (non-Javadoc)
+    * 
+    * @see org.jboss.arquillian.maven.spi.DeploymentsScenarioGenerator#generateDeploymentDescriptions(java.lang.annotation.Annotation, org.jboss.arquillian.spi.client.deployment.DeploymentScenario, org.jboss.arquillian.spi.TestClass)
+    */
+   public void generateDeploymentDescriptions(MavenDeployments configuration, DeploymentScenario scenario, TestClass testClass)
+   {
+      for (MavenDeployment maven : configuration.value())
       {
          scenario.addDeployment(generateDeployment(maven));
       }
-
-      return scenario;
    }
 
    private DeploymentDescription generateDeployment(MavenDeployment maven)
@@ -125,16 +116,5 @@ public class MavenDeploymentScenarioGenerator implements DeploymentScenarioGener
 
       return archives.iterator().next();
 
-   }
-
-   /**
-    * @param testClass
-    * @return
-    */
-   private DeploymentScenario chainAnnotatedDeploymentGenerator(TestClass testClass)
-   {
-      DeploymentScenarioGenerator generator = serviceLoader.get().onlyOne(AnnotationDeploymentScenarioGenerator.class);
-
-      return generator.generate(testClass);
    }
 }
