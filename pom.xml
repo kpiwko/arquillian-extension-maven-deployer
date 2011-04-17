@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+   <!--
+  vi:ts=2:sw=2:expandtab:
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+   <!-- Parent -->
+   <parent>
+      <groupId>org.jboss.arquillian</groupId>
+      <artifactId>arquillian-build</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+   </parent>
+
+   <!-- Model Version -->
+   <modelVersion>4.0.0</modelVersion>
+
+   <!-- Artifact Configuration -->
+   <groupId>org.jboss.arquillian.extension</groupId>
+   <artifactId>arquillian-maven-deployer</artifactId>
+   <name>Arquillian Maven Deployment Scenario Builder Extension</name>
+   <description>Extension for creating and overriding deployments using Maven</description>
+
+   <developers>
+      <developer>
+         <name>Karel Piwko</name>
+         <email>kpiwko@redhat.com</email>
+      </developer>
+   </developers>
+
+   <properties>
+      <!-- Versioning -->
+      <version.shrinkwrap>1.0.0-alpha-12</version.shrinkwrap>
+      <version.jboss_60>6.0.0.Final</version.jboss_60>
+   </properties>
+
+   <!-- Dependencies -->
+   <dependencies>
+      <dependency>
+         <groupId>org.jboss.arquillian</groupId>
+         <artifactId>arquillian-spi</artifactId>
+         <version>${project.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.arquillian</groupId>
+         <artifactId>arquillian-impl-base</artifactId>
+         <version>${project.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.shrinkwrap.resolver</groupId>
+         <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
+         <version>${version.shrinkwrap}</version>
+      </dependency>
+
+      <!-- test dependencies -->
+
+      <dependency>
+         <groupId>org.jboss.arquillian</groupId>
+         <artifactId>arquillian-junit</artifactId>
+         <version>${project.version}</version>
+         <scope>test</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>junit</groupId>
+         <artifactId>junit</artifactId>
+         <scope>test</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>org.jboss.arquillian</groupId>
+         <artifactId>arquillian-impl-base</artifactId>
+         <version>${project.version}</version>
+         <classifier>tests</classifier>
+         <scope>test</scope>
+      </dependency>
+      
+      <!-- external dependencies -->
+      <dependency>
+         <groupId>org.mockito</groupId>
+         <artifactId>mockito-all</artifactId>
+         <scope>test</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>org.jboss.arquillian.container</groupId>
+         <artifactId>arquillian-jbossas-remote-6</artifactId>
+         <version>${project.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.jbossas</groupId>
+         <artifactId>jboss-as-client</artifactId>
+         <version>${version.jboss_60}</version>
+         <type>pom</type>
+      </dependency>
+
+   </dependencies>
+
+   <profiles>
+   
+      <!-- CONTAINER PROFILES -->
+
+      <!--  Deploys example to remote JBoss AS 6 instance -->
+      <profile>
+         <id>jbossas-remote-6</id>
+         <activation>
+            <activeByDefault>false</activeByDefault>
+         </activation>
+         <dependencies>
+            <dependency>
+               <groupId>org.jboss.arquillian.container</groupId>
+               <artifactId>arquillian-jbossas-remote-6</artifactId>
+               <version>${project.version}</version>
+            </dependency>
+            <dependency>
+               <groupId>org.jboss.jbossas</groupId>
+               <artifactId>jboss-as-client</artifactId>
+               <version>${version.jboss_60}</version>
+               <type>pom</type>
+            </dependency>
+         </dependencies>
+
+      </profile>
+
+   </profiles>
+
+</project>
+
