@@ -95,33 +95,18 @@
 
    </dependencies>
 
-   <profiles>
-   
-      <!-- CONTAINER PROFILES -->
-
-      <!--  Deploys example to remote JBoss AS 6 instance -->
-      <profile>
-         <id>jbossas-remote-6</id>
-         <activation>
-            <activeByDefault>false</activeByDefault>
-         </activation>
-         <dependencies>
-            <dependency>
-               <groupId>org.jboss.arquillian.container</groupId>
-               <artifactId>arquillian-jbossas-remote-6</artifactId>
-               <version>${project.version}</version>
-            </dependency>
-            <dependency>
-               <groupId>org.jboss.jbossas</groupId>
-               <artifactId>jboss-as-client</artifactId>
-               <version>${version.jboss_60}</version>
-               <type>pom</type>
-            </dependency>
-         </dependencies>
-
-      </profile>
-
-   </profiles>
+   <build>
+      <plugins>
+         <!-- workaround for http://bugs.sun.com/view_bug.do?bug_id=6512707 -->
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+               <proc>none</proc>
+            </configuration>
+         </plugin>
+      </plugins>
+   </build>
 
 </project>
 
